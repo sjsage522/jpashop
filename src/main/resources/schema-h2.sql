@@ -11,8 +11,8 @@ CREATE TABLE users
     email         varchar(50) NOT NULL,
     password      varchar(90) NOT NULL,
     login_count   int         NOT NULL DEFAULT 0,
-    last_login_at date                 DEFAULT NULL,
-    created_at    date        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_login_at timestamp            DEFAULT NULL,
+    created_at    timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT unique_email UNIQUE (email)
 );
@@ -27,16 +27,16 @@ CREATE TABLE stores
     is_run_24   int         NOT NULL,
     open_time   int         NOT NULL,
     close_time  int         NOT NULL,
-    created_at  date        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at  timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE favorite_stores
 (
     id         bigint generated always as identity,
-    user_id    bigint NOT NULL,
-    store_id   bigint NOT NULL,
-    created_at date   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id    bigint    NOT NULL,
+    store_id   bigint    NOT NULL,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT unique_user_store UNIQUE (user_id, store_id),
     CONSTRAINT fk_favorite_to_users FOREIGN KEY (user_id) REFERENCES users (id),
@@ -47,12 +47,13 @@ CREATE TYPE order_state as ENUM ('NEW', 'COMPLETE', 'CANCEL');
 CREATE TABLE orders
 (
     id             bigint generated always as identity,
-    user_id        bigint NOT NULL,
-    store_id       bigint NOT NULL,
-    order_state    order_state     DEFAULT 'NEW' NOT NULL,
-    cancel_message varchar(512)    DEFAULT NULL,
-    completed_at   date            DEFAULT NULL,
-    created_at     date   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id        bigint    NOT NULL,
+    store_id       bigint    NOT NULL,
+    order_state    order_state        DEFAULT 'NEW' NOT NULL,
+    cancel_message varchar(512)       DEFAULT NULL,
+    canceled_at    timestamp          DEFAULT NULL,
+    completed_at   timestamp          DEFAULT NULL,
+    created_at     timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT fk_orders_to_users FOREIGN KEY (user_id) REFERENCES users (id),
     CONSTRAINT fk_orders_to_stores FOREIGN KEY (store_id) REFERENCES stores (id)
