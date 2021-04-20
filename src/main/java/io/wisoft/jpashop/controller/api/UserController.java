@@ -59,14 +59,13 @@ public class UserController {
         private Email email;
         private int loginCount;
         private LocalDateTime lastLoginAt;
-        private LocalDateTime createAt;
+        private LocalDateTime createdAt;
 
         protected UserResponse() {
         }
 
         public UserResponse(User source) {
             BeanUtils.copyProperties(source, this);
-            this.lastLoginAt = source.getLastLoginAt();
         }
     }
 }
