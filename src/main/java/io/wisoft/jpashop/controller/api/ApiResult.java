@@ -1,9 +1,12 @@
 package io.wisoft.jpashop.controller.api;
 
+import lombok.Getter;
+
 /**
  * 제네릭을 통해 타입 한정.
  * @param <T>
  */
+@Getter
 public class ApiResult<T> {
 
     private final T data;
