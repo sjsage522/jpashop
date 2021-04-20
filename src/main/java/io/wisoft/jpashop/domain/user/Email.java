@@ -1,5 +1,6 @@
 package io.wisoft.jpashop.domain.user;
 
+import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
 import static com.google.common.base.Preconditions.checkArgument;
 
 @Embeddable
+@Getter
 public class Email {
 
     @Column(name = "email")
