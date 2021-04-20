@@ -1,4 +1,4 @@
-package io.wisoft.jpashop.controller;
+package io.wisoft.jpashop.controller.api;
 
 import io.wisoft.jpashop.domain.user.Email;
 import io.wisoft.jpashop.domain.user.User;
