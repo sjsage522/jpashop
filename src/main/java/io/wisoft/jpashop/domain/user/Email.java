@@ -29,7 +29,7 @@ public class Email {
     public static Email from(String address) { return new Email(address); }
 
     private boolean isValidAddress(String address) {
-        Pattern pattern = Pattern.compile("^[\\\\w!#$%&'*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$");
+        Pattern pattern = Pattern.compile("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
         Matcher matcher = pattern.matcher(address);
         return matcher.matches();
     }
