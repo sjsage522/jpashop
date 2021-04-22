@@ -49,6 +49,12 @@ public class StoreController {
         return succeed(results);
     }
 
+    /**
+     * 즐겨찾기 상점목록 조회 API
+     * @param userId 즐겨찾기를 등록한 사용자 id
+     * @param localDateTime 영업중인지 판단을 위한 조회시각
+     * @return 즐겨찾기에 추가한 상점 목록
+     */
     @GetMapping("/user/{userId}/bookmark/stores")
     public ApiResult<List<FavoriteStoreResponse>> findFavoriteStoreByUserId(
             @PathVariable Long userId,
