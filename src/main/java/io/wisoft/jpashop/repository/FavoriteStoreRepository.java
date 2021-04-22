@@ -4,6 +4,7 @@ import io.wisoft.jpashop.domain.favoritestore.FavoriteStore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FavoriteStoreRepository extends JpaRepository<FavoriteStore, Long> {
@@ -14,5 +15,5 @@ public interface FavoriteStoreRepository extends JpaRepository<FavoriteStore, Lo
             "where fs.id = s.id " +
             "and fs.user.id = :userId " +
             "order by fs.id desc")
-    Optional<FavoriteStore> findByUserId(final Long userId);
+    List<FavoriteStore> findByUserId(final Long userId);
 }
