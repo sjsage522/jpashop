@@ -23,5 +23,5 @@ public class BusinessHours {
     @Column(name = "close_time")
     private int closeTime;
 
-    protected BusinessHours() {}
+    public BusinessHours() {}
 }
