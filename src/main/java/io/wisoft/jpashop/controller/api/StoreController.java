@@ -1,11 +1,14 @@
 package io.wisoft.jpashop.controller.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.wisoft.jpashop.domain.favoritestore.FavoriteStore;
 import io.wisoft.jpashop.domain.store.BusinessHours;
 import io.wisoft.jpashop.domain.store.Store;
 import io.wisoft.jpashop.domain.store.StoreState;
+import io.wisoft.jpashop.service.FavoriteStoreService;
 import io.wisoft.jpashop.service.StoreService;
+import io.wisoft.jpashop.util.StoreUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -25,6 +28,7 @@ import static io.wisoft.jpashop.controller.api.ApiResult.*;
 public class StoreController {
 
     private final StoreService storeService;
+    private final FavoriteStoreService favoriteStoreService;
 
     /**
      * 상점 목록 조회 API
@@ -43,6 +47,30 @@ public class StoreController {
         }
 
         return succeed(results);
+    }
+
+    @GetMapping("/user/{userId}/bookmark/stores")
+    public ApiResult<List<FavoriteStoreResponse>> findFavoriteStoreByUserId(
+            @PathVariable Long userId,
+            @RequestParam("time") @DateTimeFormat(pattern = "yyyyMMddHHmmss") LocalDateTime localDateTime) {
+
+        List<FavoriteStore> favoriteStores = favoriteStoreService.findByUserId(userId);
+        return succeed(getFavoriteStoreResponseList(favoriteStores, localDateTime));
+    }
+
+    private List<FavoriteStoreResponse> getFavoriteStoreResponseList(List<FavoriteStore> favoriteStores, LocalDateTime localDateTime) {
+
+        List<FavoriteStoreResponse> results = new ArrayList<>();
+        for (FavoriteStore favoriteStore : favoriteStores) {
+            boolean isOpen = true;
+
+            Store store = favoriteStore.getStore();
+            if ((store.getStoreState() != StoreState.NORMAL) || (!StoreUtils.isNormalBusinessHours(localDateTime, store.getBusinessHours())))
+                isOpen = false;
+
+            results.add(new FavoriteStoreResponse(store.getId(), isOpen, new StoreResponse(store), favoriteStore.getCreatedAt()));
+        }
+        return results;
     }
 
     @Getter
@@ -65,6 +93,7 @@ public class StoreController {
 
     @Getter
     @Setter
+    @JsonPropertyOrder({"id", "open", "store", "createdAt"})
     private static class FavoriteStoreResponse {
 
         private Long id;
