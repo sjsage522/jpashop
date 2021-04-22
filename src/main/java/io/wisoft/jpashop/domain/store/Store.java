@@ -25,4 +25,14 @@ public class Store extends BaseTimeEntity {
     private BusinessHours businessHours;
 
     protected Store() {}
+
+    public Store(final String name, final StoreState storeState, final BusinessHours businessHours) {
+        this.name = name;
+        this.storeState = storeState;
+        this.businessHours = businessHours;
+    }
+
+    public static Store from(final String name, final StoreState storeState, final BusinessHours businessHours) {
+        return new Store(name, storeState, businessHours);
+    }
 }
