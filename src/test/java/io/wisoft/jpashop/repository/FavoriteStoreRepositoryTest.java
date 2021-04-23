@@ -12,7 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @DisplayName("즐겨찾기 상점 Repository 테스트")
@@ -47,5 +47,15 @@ class FavoriteStoreRepositoryTest {
         assertThat(businessHours2.isRun24()).isEqualTo(false);
         assertThat(businessHours2.getOpenTime()).isEqualTo(540);
         assertThat(businessHours2.getCloseTime()).isEqualTo(1080);
+    }
+
+    @Test
+    @DisplayName("테스트 2. 즐겨찾기 상점목록 조회 테스트")
+    void _2_findFavoriteStoreByUserIdAndStoreId() throws Exception {
+
+        boolean isPresent = favoriteStoreRepository.findByUserIdAndStoreId(2L, 1L).isPresent();
+        boolean isPresent2 = favoriteStoreRepository.findByUserIdAndStoreId(1L, 1L).isPresent();
+        assertThat(isPresent).isFalse();
+        assertThat(isPresent2).isTrue();
     }
 }
