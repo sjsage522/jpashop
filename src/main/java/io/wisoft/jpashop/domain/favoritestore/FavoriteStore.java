@@ -28,4 +28,13 @@ public class FavoriteStore extends BaseTimeEntity {
     private Store store;
 
     protected FavoriteStore() {}
+
+    private FavoriteStore(final User user, final Store store) {
+        this.user = user;
+        this.store = store;
+    }
+
+    public static FavoriteStore from(final User user, final Store store) {
+        return new FavoriteStore(user, store);
+    }
 }
