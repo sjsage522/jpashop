@@ -16,4 +16,6 @@ public interface FavoriteStoreRepository extends JpaRepository<FavoriteStore, Lo
             "and fs.user.id = :userId " +
             "order by fs.id desc")
     List<FavoriteStore> findByUserId(final Long userId);
+
+    Optional<FavoriteStore> findByUserIdAndStoreId(final Long userId, final Long storeId);
 }
