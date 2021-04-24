@@ -79,6 +79,19 @@ public class StoreController {
         return results;
     }
 
+    /**
+     * 즐겨찾기 상점 추가 API
+     * @param userId 즐겨찾기를 등록할 사용자 id
+     * @param storeId 즐겨찾기에 추가할 상점 id
+     * @return
+     */
+    @PostMapping("/user/{userId}/store/{storeId}/bookmark")
+    public ApiResult<FavoriteStoreResponse> addFavoriteStore(
+            @PathVariable Long userId, @PathVariable Long storeId) {
+        FavoriteStore favoriteStore = favoriteStoreService.addFavoriteStore(userId, storeId);
+        return succeed(new FavoriteStoreResponse(favoriteStore));
+    }
+
     @Getter
     @Setter
     private static class StoreResponse {
@@ -119,6 +132,7 @@ public class StoreController {
 
         public FavoriteStoreResponse(FavoriteStore source) {
             BeanUtils.copyProperties(source, this);
+            storeResponse = new StoreResponse(source.getStore());
         }
     }
 
