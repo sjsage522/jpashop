@@ -1,6 +1,5 @@
 package io.wisoft.jpashop.service;
 
-import com.google.common.base.Preconditions;
 import io.wisoft.jpashop.domain.favoritestore.FavoriteStore;
 import io.wisoft.jpashop.domain.store.Store;
 import io.wisoft.jpashop.domain.user.User;
@@ -28,12 +27,27 @@ public class FavoriteStoreService {
 
     @Transactional
     public FavoriteStore addFavoriteStore(final Long userId, final Long storeId) {
-        User findUser = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("user is not exists."));
-        Store findStore = storeRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException("store is not exists."));
+        User findUser = getFindUserAndIsValid(userId);
+        Store findStore = getFindStoreAndIsValid(storeId);
 
         if (favoriteStoreRepository.findByUserIdAndStoreId(userId, storeId).isPresent())
             throw new IllegalArgumentException("already exist favorite store.");
 
         return favoriteStoreRepository.save(FavoriteStore.from(findUser, findStore));
+    }
+
+    @Transactional
+    public int deleteFavoriteStore(final Long userId, final Long storeId) {
+        getFindUserAndIsValid(userId);
+        getFindStoreAndIsValid(storeId);
+        return favoriteStoreRepository.deleteByUserIdAndStoreId(userId, storeId);
+    }
+
+    private Store getFindStoreAndIsValid(Long storeId) {
+        return storeRepository.findById(storeId).orElseThrow(() -> new IllegalArgumentException("store is not exists."));
+    }
+
+    private User getFindUserAndIsValid(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("user is not exists."));
     }
 }
