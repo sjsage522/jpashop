@@ -11,9 +11,8 @@ public interface FavoriteStoreRepository extends JpaRepository<FavoriteStore, Lo
 
     @Query("select fs " +
             "from FavoriteStore fs " +
-            "join fetch fs.store s " +
-            "where fs.id = s.id " +
-            "and fs.user.id = :userId " +
+            "join fetch fs.store " +
+            "where fs.user.id = :userId " +
             "order by fs.id desc")
     List<FavoriteStore> findByUserId(final Long userId);
 
