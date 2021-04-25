@@ -77,6 +77,19 @@ public class StoreController {
         return succeed(new FavoriteStoreResponse(favoriteStore));
     }
 
+    /**
+     * 즐겨 찾기 상점 삭제 API
+     * @param userId 즐겨찾기를 삭제할 사용자 id
+     * @param storeId 즐겨찾기에서 삭제할 상점 id
+     * @return data 필드가 true 일 때, 삭제 성공
+     */
+    @DeleteMapping("user/{userId}/store/{storeId}/favorite")
+    public ApiResult<Boolean> deleteFavoriteStore(
+            @PathVariable Long userId, @PathVariable Long storeId) {
+        int result = favoriteStoreService.deleteFavoriteStore(userId, storeId);
+        return result == 1 ? succeed(true) : failed("Is not favorite store.");
+    }
+
     @Getter
     @Setter
     private static class StoreResponse {
