@@ -58,4 +58,12 @@ class FavoriteStoreRepositoryTest {
         assertThat(isPresent).isFalse();
         assertThat(isPresent2).isTrue();
     }
+
+    @Test
+    @DisplayName("테스트 3. 즐겨찾기 상점 삭제 테스트")
+    void _3_deleteByUserIdAndStoreId() throws Exception {
+
+        int delete = favoriteStoreRepository.deleteByUserIdAndStoreId(1L, 1L);
+        assertThat(delete).isEqualTo(1);
+    }
 }
