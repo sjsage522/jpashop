@@ -10,38 +10,70 @@ import io.wisoft.jpashop.repository.StoreRepository;
 import io.wisoft.jpashop.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
-@SpringBootTest(classes = FavoriteStoreService.class)
+import static org.mockito.BDDMockito.given;
+
+@ExtendWith(MockitoExtension.class)
 @DisplayName("즐겨찾기 상점 Service 테스트")
 class FavoriteStoreServiceTest {
 
-    @Autowired
+    @InjectMocks
     FavoriteStoreService favoriteStoreService;
 
-    @MockBean
+    @Mock
     UserRepository userRepository;
-    @MockBean
+    @Mock
     StoreRepository storeRepository;
-    @MockBean
+    @Mock
     FavoriteStoreRepository favoriteStoreRepository;
 
     @Test
-    @DisplayName("테스트 1. 즐겨찾기 상점 추가 테스트")
+    @DisplayName("테스트 1. 즐겨찾기 상점 추가 테스트 (예외가 발생하면 안됨)")
     void _1_addFavoriteStore() throws Exception {
 
+        // given
         User user = createUser();
+        Long fakeUserId = 1L;
+        ReflectionTestUtils.setField(user, "id", fakeUserId);
+        given(userRepository.findById(fakeUserId)).willReturn(Optional.of(user));
+
         Store store = createStore();
+        Long fakeStoreId = 1L;
+        ReflectionTestUtils.setField(store, "id", fakeStoreId);
+        given(storeRepository.findById(fakeStoreId)).willReturn(Optional.of(store));
 
-        BDDMockito.given(userRepository.findById(1L)).willReturn(Optional.of(user));
-        BDDMockito.given(storeRepository.findById(1L)).willReturn(Optional.of(store));
+        // when
+        favoriteStoreService.addFavoriteStore(fakeUserId, fakeStoreId);
 
-        favoriteStoreService.addFavoriteStore(1L ,1L);
+        // then
+    }
+
+    @Test
+    @DisplayName("테스트 2. 즐겨찾기 상점 삭제 테스트 (예외가 발생하면 안됨)")
+    void _2_deleteFavoriteStore() throws Exception {
+
+        // given
+        User user = createUser();
+        Long fakeUserId = 1L;
+        ReflectionTestUtils.setField(user, "id", fakeUserId);
+        given(userRepository.findById(fakeUserId)).willReturn(Optional.of(user));
+
+        Store store = createStore();
+        Long fakeStoreId = 1L;
+        ReflectionTestUtils.setField(store, "id", fakeStoreId);
+        given(storeRepository.findById(fakeStoreId)).willReturn(Optional.of(store));
+
+        // when
+        favoriteStoreService.deleteFavoriteStore(fakeUserId, fakeStoreId);
+
+        // then
     }
 
     private User createUser() {
