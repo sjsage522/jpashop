@@ -93,7 +93,7 @@ class StoreControllerTest {
     void _4_findFavoriteStoreApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
-                get("/api/user/1/bookmark/stores?time=20210301090000")
+                get("/api/user/1/favorite/stores?time=20210301090000")
                         .accept(MediaType.APPLICATION_JSON)
         );
         result.andDo(print())
@@ -129,7 +129,7 @@ class StoreControllerTest {
     void _5_addFavoriteStoreApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
-                post("/api/user/1/store/3/bookmark")
+                post("/api/user/1/store/3/favorite")
                         .accept(MediaType.APPLICATION_JSON)
         );
         result.andDo(print())
@@ -147,7 +147,7 @@ class StoreControllerTest {
         ;
         // 즐겨찾기 추가 후 목록 조회
         ResultActions after = mockMvc.perform(
-                get("/api/user/1/bookmark/stores?time=20210301230000")
+                get("/api/user/1/favorite/stores?time=20210301230000")
                         .accept(MediaType.APPLICATION_JSON)
         );
         after.andDo(print())

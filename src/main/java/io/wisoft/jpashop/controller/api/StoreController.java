@@ -55,7 +55,7 @@ public class StoreController {
      * @param localDateTime 영업중인지 판단을 위한 조회시각
      * @return 즐겨찾기에 추가한 상점 목록
      */
-    @GetMapping("/user/{userId}/bookmark/stores")
+    @GetMapping("/user/{userId}/favorite/stores")
     public ApiResult<List<FavoriteStoreResponse>> findFavoriteStoreByUserId(
             @PathVariable Long userId,
             @RequestParam("time") @DateTimeFormat(pattern = "yyyyMMddHHmmss") LocalDateTime localDateTime) {
@@ -64,28 +64,13 @@ public class StoreController {
         return succeed(getFavoriteStoreResponseList(favoriteStores, localDateTime));
     }
 
-    private List<FavoriteStoreResponse> getFavoriteStoreResponseList(List<FavoriteStore> favoriteStores, LocalDateTime localDateTime) {
-
-        List<FavoriteStoreResponse> results = new ArrayList<>();
-        for (FavoriteStore favoriteStore : favoriteStores) {
-            boolean isOpen = true;
-
-            Store store = favoriteStore.getStore();
-            if ((store.getStoreState() != StoreState.NORMAL) || (!StoreUtils.isNormalBusinessHours(localDateTime, store.getBusinessHours())))
-                isOpen = false;
-
-            results.add(new FavoriteStoreResponse(store.getId(), isOpen, new StoreResponse(store), favoriteStore.getCreatedAt()));
-        }
-        return results;
-    }
-
     /**
      * 즐겨찾기 상점 추가 API
      * @param userId 즐겨찾기를 등록할 사용자 id
      * @param storeId 즐겨찾기에 추가할 상점 id
      * @return
      */
-    @PostMapping("/user/{userId}/store/{storeId}/bookmark")
+    @PostMapping("/user/{userId}/store/{storeId}/favorite")
     public ApiResult<FavoriteStoreResponse> addFavoriteStore(
             @PathVariable Long userId, @PathVariable Long storeId) {
         FavoriteStore favoriteStore = favoriteStoreService.addFavoriteStore(userId, storeId);
@@ -136,4 +121,18 @@ public class StoreController {
         }
     }
 
+    private List<FavoriteStoreResponse> getFavoriteStoreResponseList(List<FavoriteStore> favoriteStores, LocalDateTime localDateTime) {
+
+        List<FavoriteStoreResponse> results = new ArrayList<>();
+        for (FavoriteStore favoriteStore : favoriteStores) {
+            boolean isOpen = true;
+
+            Store store = favoriteStore.getStore();
+            if ((store.getStoreState() != StoreState.NORMAL) || (!StoreUtils.isNormalBusinessHours(localDateTime, store.getBusinessHours())))
+                isOpen = false;
+
+            results.add(new FavoriteStoreResponse(store.getId(), isOpen, new StoreResponse(store), favoriteStore.getCreatedAt()));
+        }
+        return results;
+    }
 }
