@@ -18,4 +18,6 @@ public interface FavoriteStoreRepository extends JpaRepository<FavoriteStore, Lo
     List<FavoriteStore> findByUserId(final Long userId);
 
     Optional<FavoriteStore> findByUserIdAndStoreId(final Long userId, final Long storeId);
+
+    int deleteByUserIdAndStoreId(final Long userId, final Long storeId);
 }
