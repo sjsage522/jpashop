@@ -164,5 +164,20 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.data[2].id", is(1)))
                 .andExpect(jsonPath("$.data[2].store.name", is("Normal Store1")))
         ;
+
+    }
+
+    @Test
+    @DisplayName("테스트 06. 즐겨찾기 상점 추가 실패 테스트 (이미 즐겨찾기에 추가된 상점)")
+    void _08_createStoreBookmarkApiTest() throws Exception {
+        ResultActions result = mockMvc.perform(
+                post("/api/user/1/store/2/favorite")
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+        result.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").doesNotExist())
+                .andExpect(jsonPath("$.errorMessage").exists())
+        ;
     }
 }
