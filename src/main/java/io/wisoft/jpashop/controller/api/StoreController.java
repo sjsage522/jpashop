@@ -68,7 +68,7 @@ public class StoreController {
      * 즐겨찾기 상점 추가 API
      * @param userId 즐겨찾기를 등록할 사용자 id
      * @param storeId 즐겨찾기에 추가할 상점 id
-     * @return
+     * @return 즐겨찾기 결과
      */
     @PostMapping("/user/{userId}/store/{storeId}/favorite")
     public ApiResult<FavoriteStoreResponse> addFavoriteStore(
