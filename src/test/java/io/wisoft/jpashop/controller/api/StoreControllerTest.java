@@ -169,7 +169,7 @@ class StoreControllerTest {
 
     @Test
     @DisplayName("테스트 06. 즐겨찾기 상점 추가 실패 테스트 (이미 즐겨찾기에 추가된 상점)")
-    void _08_createStoreBookmarkApiTest() throws Exception {
+    void _06_addFavoriteStoreApiTest() throws Exception {
         ResultActions result = mockMvc.perform(
                 post("/api/user/1/store/2/favorite")
                         .accept(MediaType.APPLICATION_JSON)
