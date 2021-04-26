@@ -10,8 +10,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,8 +29,8 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("테스트 1. 정상 영업중인 상점 조회 테스트 (월요일 휴무 상점 제외, 조회시각 2021-03-01 09:00:00)")
-    void _1_findRunningStoreApiTest() throws Exception {
+    @DisplayName("테스트 01. 정상 영업중인 상점 조회 테스트 (월요일 휴무 상점 제외, 조회시각 2021-03-01 09:00:00)")
+    void _01_findRunningStoreApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
                 get("/api/stores?time=20210301090000")
@@ -52,8 +51,8 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("테스트 2. 정상 영업중인 상점 조회 테스트 (영업 종료 상점 제외, 조회시각 2021-03-02 23:00:00)")
-    void _2_findRunningStoreApiTest() throws Exception {
+    @DisplayName("테스트 02. 정상 영업중인 상점 조회 테스트 (영업 종료 상점 제외, 조회시각 2021-03-02 23:00:00)")
+    void _02_findRunningStoreApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
                 get("/api/stores?time=20210302230000")
@@ -74,8 +73,8 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("테스트 3. 정상 영업중인 상점 조회 테스트 (휴무일과 영업종료 상점 제외, 조회시각 2021-03-01 23:00:00 )")
-    void _3_findRunningStoreApiTest() throws Exception {
+    @DisplayName("테스트 03. 정상 영업중인 상점 조회 테스트 (휴무일과 영업종료 상점 제외, 조회시각 2021-03-01 23:00:00 )")
+    void _03_findRunningStoreApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
                 get("/api/stores?time=20210301230000")
@@ -89,8 +88,8 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("테스트 4. 즐겨찾기 상점목록 조회 테스트 (영업중인 상점은 open 필드가 true, 조회시각 2021-03-01 09:00:00)")
-    void _4_findFavoriteStoreApiTest() throws Exception {
+    @DisplayName("테스트 04. 즐겨찾기 상점목록 조회 테스트 (영업중인 상점은 open 필드가 true, 조회시각 2021-03-01 09:00:00)")
+    void _04_findFavoriteStoreApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
                 get("/api/user/1/favorite/stores?time=20210301090000")
@@ -125,8 +124,8 @@ class StoreControllerTest {
     }
 
     @Test
-    @DisplayName("테스트 5. 즐겨찾기 상점 추가 성공 테스트")
-    void _5_addFavoriteStoreApiTest() throws Exception {
+    @DisplayName("테스트 05. 즐겨찾기 상점 추가 성공 테스트")
+    void _05_addFavoriteStoreApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
                 post("/api/user/1/store/3/favorite")
@@ -179,5 +178,30 @@ class StoreControllerTest {
                 .andExpect(jsonPath("$.data").doesNotExist())
                 .andExpect(jsonPath("$.errorMessage").exists())
         ;
+    }
+
+    @Test
+    @DisplayName("테스트 07. 즐겨찾기 상점 삭제 성공 테스트")
+    void _07_deleteFavoriteStoreApiTest() throws Exception {
+        ResultActions result = mockMvc.perform(
+                delete("/api/user/1/store/2/favorite")
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+        result.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", is(true)));
+    }
+
+    @Test
+    @DisplayName("테스트 08. 즐겨찾기 상점 삭제 실패 테스트 (존재하지 않는 상점)")
+    void _08_deleteFavoriteStoreApiTest() throws Exception {
+        ResultActions result = mockMvc.perform(
+                delete("/api/user/1/store/12345/favorite")
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+        result.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").doesNotExist())
+                .andExpect(jsonPath("$.errorMessage").exists());
     }
 }
