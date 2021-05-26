@@ -1,11 +1,13 @@
 package io.wisoft.jpashop.domain.orderitem;
 
 import io.wisoft.jpashop.domain.order.Order;
+import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "order_items")
+@Getter
 public class OrderItem {
 
     @Id
