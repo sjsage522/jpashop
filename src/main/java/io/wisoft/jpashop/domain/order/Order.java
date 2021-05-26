@@ -66,4 +66,14 @@ public class Order extends BaseTimeEntity {
     public void changeOrderState(OrderState orderState) { /* 단순 set..이 아닌 의미있는 메소드 이름으로 정의 */
         this.orderState = orderState;
     }
+
+    public int getTotalPrice(List<OrderItem> orderItems) {
+        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            int unitPrice = orderItem.getUnitPrice();
+            int unitCount = orderItem.getUnitCount();
+            totalPrice += unitPrice * unitCount;
+        }
+        return totalPrice;
+    }
 }
