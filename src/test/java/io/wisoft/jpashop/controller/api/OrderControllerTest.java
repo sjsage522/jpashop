@@ -12,8 +12,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static io.wisoft.jpashop.util.JsonUtils.toJson;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,5 +76,53 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.data[2].state", is("NEW")))
                 .andExpect(jsonPath("$.data[2].cancel").doesNotExist())
                 .andExpect(jsonPath("$.data[2].completedAt").doesNotExist());
+    }
+
+    @Test
+    @DisplayName("테스트 2. 주문하기 성공 테스트")
+    void _2_newOrderApiTest() throws Exception {
+        ResultActions result = mockMvc.perform(
+                post("/api/user/1/store/3/order?time=20210302090000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(
+                                toJson(
+                                        new ArrayList<HashMap<String, Object>>() {{
+                                            add(
+                                                    new HashMap<>() {{
+                                                        put("name", "MENU-1");
+                                                        put("unitPrice", 10000);
+                                                        put("unitCount", 2);
+                                                    }}
+                                            );
+                                            add(
+                                                    new HashMap<>() {{
+                                                        put("name", "MENU-2");
+                                                        put("unitPrice", 5000);
+                                                        put("unitCount", 3);
+                                                    }}
+                                            );
+                                        }}
+                                )
+                        )
+        );
+        result.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data.id", is(6)))
+                .andExpect(jsonPath("$.data.storeId", is(3)))
+                .andExpect(jsonPath("$.data.items").isArray())
+                .andExpect(jsonPath("$.data.items.length()", is(2)))
+                .andExpect(jsonPath("$.data.items[0].name", is("MENU-1")))
+                .andExpect(jsonPath("$.data.items[0].unitPrice", is(10000)))
+                .andExpect(jsonPath("$.data.items[0].unitCount", is(2)))
+                .andExpect(jsonPath("$.data.items[1].name", is("MENU-2")))
+                .andExpect(jsonPath("$.data.items[1].unitPrice", is(5000)))
+                .andExpect(jsonPath("$.data.items[1].unitCount", is(3)))
+                .andExpect(jsonPath("$.data.totalPrice", is(35000)))
+                .andExpect(jsonPath("$.data.state", is("NEW")))
+                .andExpect(jsonPath("$.data.cancel").doesNotExist())
+                .andExpect(jsonPath("$.data.completedAt").doesNotExist())
+        ;
     }
 }
