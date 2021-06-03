@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
@@ -24,4 +25,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     " order by o.id desc"
     )
     List<Order> findAll(Long userId, LocalDateTime fromDate, LocalDateTime toDate);
+
+    Optional<Order> findByIdAndUserId(Long orderId, Long userId);
 }
