@@ -17,6 +17,12 @@ public class RestExceptionHandler {
         return ApiResult.failed(ex.getMessage());
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseBody
+    protected ApiResult<Object> illegalState(final IllegalStateException ex) {
+        return ApiResult.failed(ex.getMessage());
+    }
+
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseBody
     protected ApiResult<Object> noSuchElement(final NoSuchElementException ex) {
