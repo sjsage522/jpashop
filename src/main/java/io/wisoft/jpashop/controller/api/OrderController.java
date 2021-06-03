@@ -149,6 +149,7 @@ public class OrderController {
         @Size(min = 1, max = 50, message = "valid name size is 1 between 50")
         private String name;
 
+        @Min(value = 0, message = "price must be positive or zero")
         private int unitPrice;
 
         @Min(value = 1, message = "count must be greater than 0")
