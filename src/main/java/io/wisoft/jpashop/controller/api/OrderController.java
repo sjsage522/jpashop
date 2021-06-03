@@ -87,6 +87,12 @@ public class OrderController {
         return succeed(new OrderResponse(orderService.order(userId, storeId, time, orderItems)));
     }
 
+    /**
+     * 주문 취소 API
+     * @param userId 주문자 id
+     * @param orderId 주문을 취소할 주문 id
+     * @param request 취소 요청 message
+     */
     @PatchMapping("/user/{userId}/order/{orderId}/cancel")
     public ApiResult<OrderResponse> cancel(
             @PathVariable Long userId,
