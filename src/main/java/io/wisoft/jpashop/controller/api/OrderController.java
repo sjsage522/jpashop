@@ -74,6 +74,7 @@ public class OrderController {
     ) throws BindException {
 
         if (time == null) time = LocalDateTime.now();
+        if (requests.size() == 0) throw new IllegalStateException("order item must be minimum 1");
 
         customIncludeCollectionValidator.validate(requests, bindingResult);
         if (bindingResult.hasErrors()) throw new BindException(bindingResult);
