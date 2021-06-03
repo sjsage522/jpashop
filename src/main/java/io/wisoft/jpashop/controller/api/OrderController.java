@@ -13,6 +13,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -83,6 +84,19 @@ public class OrderController {
         return succeed(new OrderResponse(orderService.order(userId, storeId, time, orderItems)));
     }
 
+    @PatchMapping("/user/{userId}/order/{orderId}/cancel")
+    public ApiResult<OrderResponse> cancel(
+            @PathVariable Long userId,
+            @PathVariable Long orderId,
+            @RequestBody @Valid OrderCancelRequest request
+    ) {
+
+        String message = request.getMessage();
+        Order cancelOrder = orderService.cancel(orderId, userId, message);
+
+        return succeed(new OrderResponse(cancelOrder));
+    }
+
     @Getter
     private static class OrderResponse {
 
@@ -136,5 +150,12 @@ public class OrderController {
 
         @Min(value = 1, message = "count must be greater than 0")
         private int unitCount;
+    }
+
+    @Getter
+    private static class OrderCancelRequest {
+
+        @NotBlank(message = "message must be not blank")
+        private String message;
     }
 }
