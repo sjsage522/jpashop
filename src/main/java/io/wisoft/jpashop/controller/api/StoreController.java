@@ -29,20 +29,21 @@ public class StoreController {
 
     /**
      * 상점 목록 조회 API
-     * @param localDateTime 영업중인지 판단을 위한 조회 시각
+     * @param time 영업중인지 판단을 위한 조회 시각
      * @return 영업 중인 상점 목록
      */
     @GetMapping("/stores")
     public ApiResult<List<StoreResponse>> findRunningStore(
-            @RequestParam("time") @DateTimeFormat(pattern = "yyyyMMddHHmmss") LocalDateTime localDateTime) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMddHHmmss") LocalDateTime time) {
 
-        List<Store> runningStores = storeService.findRunningStore(localDateTime);
+        if (time == null) time = LocalDateTime.now();
+
+        List<Store> runningStores = storeService.findRunningStore(time);
         List<StoreResponse> results = new ArrayList<>();
         for (Store runningStore : runningStores) {
             StoreResponse storeResponse = new StoreResponse(runningStore);
             results.add(storeResponse);
         }
-
         return succeed(results);
     }
 

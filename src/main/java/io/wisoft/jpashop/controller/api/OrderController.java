@@ -68,10 +68,12 @@ public class OrderController {
     public ApiResult<OrderResponse> order(
             @PathVariable Long userId,
             @PathVariable Long storeId,
-            @RequestParam @DateTimeFormat(pattern = "yyyyMMddHHmmss") LocalDateTime time,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMddHHmmss") LocalDateTime time,
             @RequestBody List<OrderItemRequest> requests,
             BindingResult bindingResult
     ) throws BindException {
+
+        if (time == null) time = LocalDateTime.now();
 
         customIncludeCollectionValidator.validate(requests, bindingResult);
         if (bindingResult.hasErrors()) throw new BindException(bindingResult);
