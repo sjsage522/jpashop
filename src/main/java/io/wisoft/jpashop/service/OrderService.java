@@ -1,5 +1,6 @@
 package io.wisoft.jpashop.service;
 
+import io.wisoft.jpashop.domain.order.Cancel;
 import io.wisoft.jpashop.domain.order.Order;
 import io.wisoft.jpashop.domain.order.OrderState;
 import io.wisoft.jpashop.domain.orderitem.OrderItem;
@@ -45,5 +46,27 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         return newOrder;
+    }
+
+    @Transactional
+    public Order cancel(Long orderId, Long userId, String message) {
+
+        String errorMessage = "Could not changed to cancel state";
+
+        Order findOrder = orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new IllegalStateException(errorMessage));
+
+        if (!findOrder.getOrderState().equals(OrderState.NEW)) throw new IllegalStateException(errorMessage);
+
+        cancelOrder(findOrder, message);
+
+        return findOrder;
+    }
+
+    private void cancelOrder(Order order, String message) {
+        order.changeOrderState(OrderState.CANCEL);
+
+        Cancel cancel = new Cancel(message, LocalDateTime.now());
+        order.setCancel(cancel);
     }
 }
