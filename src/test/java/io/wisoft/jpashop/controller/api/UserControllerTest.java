@@ -1,7 +1,9 @@
 package io.wisoft.jpashop.controller.api;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.MethodName.class)
 @DisplayName("사용자 API 테스트")
 class UserControllerTest {
 
@@ -31,8 +34,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("테스트 1. 사용자 로그인 테스트")
-    void _1_userLoginApiTest() throws Exception {
+    @DisplayName("테스트 01. 사용자 로그인 테스트")
+    void _01_userLoginApiTest() throws Exception {
 
         ResultActions result = mockMvc.perform(
                 post("/api/login")

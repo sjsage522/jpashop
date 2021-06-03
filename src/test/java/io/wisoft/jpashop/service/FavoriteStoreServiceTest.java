@@ -9,7 +9,9 @@ import io.wisoft.jpashop.repository.FavoriteStoreRepository;
 import io.wisoft.jpashop.repository.StoreRepository;
 import io.wisoft.jpashop.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,6 +23,7 @@ import java.util.Optional;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 @DisplayName("즐겨찾기 상점 Service 테스트")
 class FavoriteStoreServiceTest {
 
@@ -35,8 +38,8 @@ class FavoriteStoreServiceTest {
     FavoriteStoreRepository favoriteStoreRepository;
 
     @Test
-    @DisplayName("테스트 1. 즐겨찾기 상점 추가 테스트 (예외가 발생하면 안됨)")
-    void _1_addFavoriteStore() throws Exception {
+    @DisplayName("테스트 01. 즐겨찾기 상점 추가 테스트 (예외가 발생하면 안됨)")
+    void _01_addFavoriteStore() throws Exception {
 
         // given
         User user = createUser();
@@ -56,8 +59,8 @@ class FavoriteStoreServiceTest {
     }
 
     @Test
-    @DisplayName("테스트 2. 즐겨찾기 상점 삭제 테스트 (예외가 발생하면 안됨)")
-    void _2_deleteFavoriteStore() throws Exception {
+    @DisplayName("테스트 02. 즐겨찾기 상점 삭제 테스트 (예외가 발생하면 안됨)")
+    void _02_deleteFavoriteStore() throws Exception {
 
         // given
         User user = createUser();

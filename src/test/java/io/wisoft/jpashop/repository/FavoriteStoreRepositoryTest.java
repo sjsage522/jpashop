@@ -4,9 +4,10 @@ import io.wisoft.jpashop.domain.favoritestore.FavoriteStore;
 import io.wisoft.jpashop.domain.store.BusinessHours;
 import io.wisoft.jpashop.domain.store.Store;
 import io.wisoft.jpashop.domain.store.StoreState;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -15,14 +16,15 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@TestMethodOrder(MethodOrderer.MethodName.class)
 @DisplayName("즐겨찾기 상점 Repository 테스트")
 class FavoriteStoreRepositoryTest {
 
     @Autowired FavoriteStoreRepository favoriteStoreRepository;
 
     @Test
-    @DisplayName("테스트 1. 즐겨찾기 상점목록 조회 테스트")
-    void _1_findFavoriteStoreByUserId() throws Exception {
+    @DisplayName("테스트 01. 즐겨찾기 상점목록 조회 테스트")
+    void _01_findFavoriteStoreByUserId() throws Exception {
 
         List<FavoriteStore> favoriteStores = favoriteStoreRepository.findByUserId(1L);
 
@@ -50,8 +52,8 @@ class FavoriteStoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("테스트 2. 즐겨찾기 상점목록 조회 테스트")
-    void _2_findFavoriteStoreByUserIdAndStoreId() throws Exception {
+    @DisplayName("테스트 02. 즐겨찾기 상점목록 조회 테스트")
+    void _02_findFavoriteStoreByUserIdAndStoreId() throws Exception {
 
         boolean isPresent = favoriteStoreRepository.findByUserIdAndStoreId(2L, 1L).isPresent();
         boolean isPresent2 = favoriteStoreRepository.findByUserIdAndStoreId(1L, 1L).isPresent();
@@ -60,8 +62,8 @@ class FavoriteStoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("테스트 3. 즐겨찾기 상점 삭제 테스트")
-    void _3_deleteByUserIdAndStoreId() throws Exception {
+    @DisplayName("테스트 03. 즐겨찾기 상점 삭제 테스트")
+    void _03_deleteByUserIdAndStoreId() throws Exception {
 
         int delete = favoriteStoreRepository.deleteByUserIdAndStoreId(1L, 1L);
         assertThat(delete).isEqualTo(1);
